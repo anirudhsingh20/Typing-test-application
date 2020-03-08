@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Test</title>
+    <!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+<!-- Google Fonts -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.13.0/css/mdb.min.css" rel="stylesheet">
+    <style>
+        .highlight{
+            background-color: lightgrey;
+
+        }
+        #sampleText{
+            border: #555 solid 2px;
+            padding: 5px 10px;
+        }
+        #textInput{
+            width: 90vw;
+            margin: 0px auto;
+        }
+        #timer {
+            background-color: #777;
+            margin: 0px 5px;
+            padding: 2px;
+            border-radius: 5px;
+        }
+        .purple-border textarea {
+    border: 1px solid #ba68c8;
+}
+.purple-border .form-control:focus {
+    border: 1px solid #ba68c8;
+    box-shadow: 0 0 0 0.2rem rgba(186, 104, 200, .25);
+}
+
+.green-border-focus .form-control:focus {
+    border: 1px solid #8bc34a;
+    box-shadow: 0 0 0 0.2rem rgba(139, 195, 74, .25);
+}
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="">Typing Test</a>
+      </nav>
+      <div class="container-fluid py-4 bg-light">
+          <p name="sampleText" id="sampleText" cols="30" rows="20">
+              
+          </p>
+          <span id="result">
+              <button class="btn btn-dark btn-sm" id="start">start typing</button> 
+          </span>
+          <span id="timer">  Timer 00:00</span>
+          <div class="form-group purple-border">
+          <textarea id="textInput" class=" form-control" cols="30" rows="10"></textarea>
+        </div>
+
+      </div>
+    
+    
+<script>
+
+    var sample 
+    
+    fetch('sampleText.txt')
+        .then((res)=> res.text())
+            .then( text =>{ sample = text }).then(()=>{
+                var startTime;
+    var sampleArray = sample.split(' ')
+    var timerDiv = document.getElementById('timer')
+    var sampleText = document.getElementById('sampleText')
+    var lenOfSample
+    var result = document.getElementById('result')
+    sampleText.innerHTML = sample
+    var textInput = document.getElementById('textInput')
+    console.log('hello');
+
+//  timer function  that receive time as 60*2 and location of element
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = ' Timer ' + minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    timer = duration;
+                }
+            }, 1000);
+        }
+
+    textInput.addEventListener('click',()=>{
+        console.log('clicked')
+         startTime = new Date()
+         startTimer(60 * 2,timerDiv)
+
+    })
+
+    textInput.addEventListener('input',(event)=>{
+        // console.log('hi');
+        // console.log(event.target.value)
+        let inputedText = event.target.value
+        let lenOfText = inputedText.length || 0
+        let array = inputedText.split(' ')
+        let loopCond = array.length || 0
+        var value = 0
+        for (let i = 0; i<loopCond; i++){
+            if(array[i] === sampleArray[i]){
+                value++
+            }
+            // console.log(value);
+            
+        }
+        tempTime =  new Date().getMinutes() - startTime.getMinutes()
+        
+        speed = eval(`(${lenOfText}/5)/${tempTime == 0 ? 1 : tempTime}`) 
+        speed = speed == 0 ? 1 : speed
+        console.log(tempTime);
+        
+        
+        result.innerHTML = `correct typed words : <b> ${value} </b>
+                           speed is <b> ${(speed).toFixed(2)} </b>`
+        value = 0
+        
+    })
+            })
+    
+    
+
+
+</script>
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.13.0/js/mdb.min.js"></script>
+
+</body>
+</html>
